@@ -17,5 +17,8 @@ RUN pnpm install --frozen-lockfile
 # Build the server application
 RUN pnpm build
 
+# Use EXPOSE to indicate which port your application listens on
+EXPOSE $PORT
+
 # Start the application
 CMD node ./dist/server/entry.mjs

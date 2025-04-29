@@ -21,6 +21,7 @@ export default defineConfig({
 
 	env: {
 		schema: {
+			HOST: envField.string({ context: 'server', access: 'public', default: '0.0.0.0' }),
 			OPENAI_API_KEY: envField.string({ context: 'server', access: 'secret' }),
 		},
 	},
