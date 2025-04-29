@@ -1,0 +1,10 @@
+{
+	"editor.defaultFormatter": "dprint.dprint",
+	"editor.formatOnSave": true,
+	"dprint.path": "/opt/homebrew/bin/dprint",
+	// or specify per language, for example
+	"[javascript]": {
+		"editor.defaultFormatter": "dprint.dprint",
+		"editor.formatOnSave": true
+	}
+}

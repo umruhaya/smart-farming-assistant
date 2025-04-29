@@ -15,8 +15,15 @@
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
     "astro": "^5.7.8",
+    "hono": "^4.7.8",
+    "lucide-react": "^0.503.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "stoker": "^1.4.2",
     "tailwindcss": "^4.1.4"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.3",
+    "vite": "^6.3.3"
   }
 }
