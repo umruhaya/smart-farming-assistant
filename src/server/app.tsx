@@ -17,6 +17,7 @@ export const createApp = function() {
 				voice: VOICE,
 			}),
 		})
+		return c.json(await r.json())
 	})
 
 	app.use(serveEmojiFavicon('🚜'))

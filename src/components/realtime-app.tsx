@@ -8,6 +8,22 @@ type ToolCallOutput = {
 	[key: string]: any
 }
 
+function getSupportedMimeType() {
+	const types = [
+		'audio/webm;codecs=opus',
+		'audio/ogg;codecs=opus',
+		'audio/webm',
+		'audio/ogg',
+	]
+	for (const type of types) {
+		if (MediaRecorder.isTypeSupported(type)) {
+			console.debug({ supType: type })
+			return type
+		}
+	}
+	return '' // Let browser pick default
+}
+
 export default function RealtimeApp() {
 	const [logs, setLogs] = useState<any[]>([])
 	const [toolCall, setToolCall] = useState<any>(null)
@@ -21,6 +37,15 @@ export default function RealtimeApp() {
 	const [audioStream, setAudioStream] = useState<MediaStream | null>(null)
 	const audioTransceiver = useRef<RTCRtpTransceiver | null>(null)
 	const tracks = useRef<RTCRtpSender[] | null>(null)
+
+	// peerConnection.current?.ontrack = e => {
+	//    const stream = e.streams[0]
+	// }
+
+	// recording state
+	const [micRecorder, setMicRecorder] = useState<MediaRecorder | null>(null)
+	const [micChunks, setMicChunks] = useState<Blob[]>([])
+	const [audioUrl, setAudioUrl] = useState<string | null>(null)
 
 	// Start a new realtime session
 	async function startSession() {
@@ -134,6 +159,23 @@ export default function RealtimeApp() {
 				})
 			}
 
+			// START RECORDING MODULE
+			const mimeType = getSupportedMimeType()
+			const recorder = new MediaRecorder(newStream, mimeType ? { mimeType } : {})
+			const chunks: Blob[] = []
+			recorder.ondataavailable = (e) => {
+				if (e.data.size > 0) chunks.push(e.data)
+			}
+			recorder.onstop = () => {
+				setMicChunks(chunks)
+				const blob = new Blob(chunks, { type: mimeType || 'audio/webm' })
+				// const url = URL.createObjectURL(blob)
+				// setAudioUrl(url)
+			}
+			recorder.start()
+			setMicRecorder(recorder)
+			// END RECORDING MODULE
+
 			setIsListening(true)
 			console.log('Microphone started.')
 		} catch (error) {
@@ -144,6 +186,12 @@ export default function RealtimeApp() {
 	// Replaces the mic track with a placeholder track
 	function stopRecording() {
 		setIsListening(false)
+
+		// START RECORDING MODULE
+		if (micRecorder && micRecorder.state !== 'inactive') {
+			micRecorder.stop()
+		}
+		// END RECORDING MODULE
 
 		// Stop existing mic tracks so the user’s mic is off
 		if (audioStream) {
@@ -230,6 +278,9 @@ export default function RealtimeApp() {
 			// Append new server events to the list
 			dataChannel.addEventListener('message', (e) => {
 				const event = JSON.parse(e.data)
+				if (event.type.includes('input_audio_buffer')) {
+					console.debug(event.type, event)
+				}
 				if (event.type === 'response.done') {
 					const output = event.response.output[0]
 					setLogs((prev) => [output, ...prev])
@@ -286,6 +337,7 @@ export default function RealtimeApp() {
 				isConnected={isSessionActive}
 				isListening={isListening}
 			/>
+			{/* {audioUrl && <audio controls src={audioUrl} />} */}
 			<Logs messages={logs} />
 		</div>
 	)
