@@ -1,6 +1,11 @@
 ---
 import RealtimeApp from '~/components/realtime-app'
 import '~/styles/global.css'
+import { INSTRUCTIONS } from '~/lib/config'
+
+const isPersonal = new URL(Astro.request.url).searchParams.get('mode') === 'personal'
+
+const instructions = isPersonal ? '' : INSTRUCTIONS
 ---
 
 <html lang="en">
@@ -12,6 +17,6 @@ import '~/styles/global.css'
 		<title>Agri Agent</title>
 	</head>
 	<body class="bg-zinc-900">
-		<RealtimeApp client:load />
+		<RealtimeApp instructions={instructions} client:load />
 	</body>
 </html>

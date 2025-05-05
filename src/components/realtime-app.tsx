@@ -1,7 +1,7 @@
 import Controls from '~/components/controls'
 import Logs from '~/components/logs'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { BASE_URL, INSTRUCTIONS, MODEL } from '~/lib/config'
+import { BASE_URL, MODEL } from '~/lib/config'
 
 type ToolCallOutput = {
 	response: string
@@ -24,7 +24,7 @@ function getSupportedMimeType() {
 	return '' // Let browser pick default
 }
 
-export default function RealtimeApp() {
+export default function RealtimeApp({ instructions }: { instructions: string }) {
 	const [logs, setLogs] = useState<any[]>([])
 	const [toolCall, setToolCall] = useState<any>(null)
 	const [isSessionStarted, setIsSessionStarted] = useState(false)
@@ -300,7 +300,7 @@ export default function RealtimeApp() {
 					type: 'session.update',
 					session: {
 						// tools: TOOLS,
-						instructions: INSTRUCTIONS,
+						instructions,
 					},
 				}
 				sendClientEvent(sessionUpdate)
