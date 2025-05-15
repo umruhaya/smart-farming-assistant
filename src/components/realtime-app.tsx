@@ -304,12 +304,13 @@ export default function RealtimeApp({ instructions }: { instructions: string }) 
 						// tools: TOOLS,
 						instructions,
 					},
-					turn_detection: {
-						type: 'semantic_vad',
-						eagerness: 'auto',
-						create_response: true, // only in conversation mode
-						interrupt_response: true, // only in conversation mode
-					},
+					// Enable Semantic VAD
+					// turn_detection: {
+					// 	type: 'semantic_vad',
+					// 	eagerness: 'auto',
+					// 	create_response: true, // only in conversation mode
+					// 	interrupt_response: true, // only in conversation mode
+					// },
 				}
 				sendClientEvent(sessionUpdate)
 				console.log('Session update sent:', sessionUpdate)
