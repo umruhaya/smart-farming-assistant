@@ -67,6 +67,8 @@ export default function RealtimeApp({ instructions }: { instructions: string }) 
 					audioElement.current = document.createElement('audio')
 				}
 				audioElement.current.autoplay = true
+
+				// listen for remote streams
 				pc.ontrack = (e) => {
 					if (audioElement.current) {
 						audioElement.current.srcObject = e.streams[0]
@@ -301,6 +303,12 @@ export default function RealtimeApp({ instructions }: { instructions: string }) 
 					session: {
 						// tools: TOOLS,
 						instructions,
+					},
+					turn_detection: {
+						type: 'semantic_vad',
+						eagerness: 'auto',
+						create_response: true, // only in conversation mode
+						interrupt_response: true, // only in conversation mode
 					},
 				}
 				sendClientEvent(sessionUpdate)
