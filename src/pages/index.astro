@@ -3,11 +3,13 @@ import RealtimeApp from '~/components/realtime-app'
 import '~/styles/global.css'
 import { ENGLISH_TUTOR, INSTRUCTIONS } from '~/lib/config'
 
-const isPersonal = new URL(Astro.request.url).searchParams.get('mode') === 'personal'
+const searchParams = new URL(Astro.request.url).searchParams
+
+const isPersonal = searchParams.get('mode') === 'personal'
 
 let instructions = isPersonal ? '' : INSTRUCTIONS
 
-if(Astro.request.url.includes('english-tutor')) {
+if(Astro.request.url.includes('english-tutor') || searchParams.get('m') === 'english-tutor') {
 	instructions = ENGLISH_TUTOR
 }
 
