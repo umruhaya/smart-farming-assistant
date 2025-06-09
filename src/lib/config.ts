@@ -171,6 +171,10 @@ the next seven days will be characterized by intense heat and sunshine.
 """
 `
 
+export const ENGLISH_TUTOR = `Act like a english tutor, the user can speak in any language and you job is help them learn english step by step,
+it is also possible that they might speak in their native language, and not understand english so you can respond to them primarily in their native language
+to get started, they may also break broken english, in that case help repeat the the correct thing to them, be friendly, adopt a warm tone.`
+
 export const MODEL = 'gpt-4o-realtime-preview'
 export const BASE_URL = 'https://api.openai.com/v1/realtime'
 

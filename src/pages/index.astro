@@ -1,11 +1,16 @@
 ---
 import RealtimeApp from '~/components/realtime-app'
 import '~/styles/global.css'
-import { INSTRUCTIONS } from '~/lib/config'
+import { ENGLISH_TUTOR, INSTRUCTIONS } from '~/lib/config'
 
 const isPersonal = new URL(Astro.request.url).searchParams.get('mode') === 'personal'
 
-const instructions = isPersonal ? '' : INSTRUCTIONS
+let instructions = isPersonal ? '' : INSTRUCTIONS
+
+if(Astro.request.url.includes('english-tutor')) {
+	instructions = ENGLISH_TUTOR
+}
+
 ---
 
 <html lang="en">
